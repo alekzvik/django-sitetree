@@ -42,9 +42,9 @@ def tree(alias, title='', items=None):
     return tree_obj
 
 
-def item(title, url, children=None, url_as_pattern=True, hint='', alias='', description='',
-         in_menu=True, in_breadcrumbs=True, in_sitetree=True,
-         access_loggedin=False, access_guest=False,
+def item(title, url, children=None, url_as_pattern=True, hint='', hidden=False,
+         alias='', description='', in_menu=True, in_breadcrumbs=True,
+         in_sitetree=True, access_loggedin=False, access_guest=False,
          access_by_perms=None, perms_mode_all=True):
     """Dynamically creates and returns a sitetree item object.
 
@@ -53,6 +53,7 @@ def item(title, url, children=None, url_as_pattern=True, hint='', alias='', desc
     :param list, set children: a list of children for tree item. Children should also be created by `item` function.
     :param bool url_as_pattern: consider URL as a name of a named URL
     :param str hint: hints are usually shown to users
+    :param bool hidden: whether to show this item in navigation
     :param str alias: item name to address it from templates
     :param str description: additional information on item (usually is not shown to users)
     :param bool in_menu: show this item in menus
@@ -66,10 +67,11 @@ def item(title, url, children=None, url_as_pattern=True, hint='', alias='', desc
                 False - user should have any of chosen permissions.
     :return:
     """
-    item_obj = get_tree_item_model()(title=title, url=url, urlaspattern=url_as_pattern,
-                                   hint=hint, alias=alias, description=description, inmenu=in_menu,
-                                   insitetree=in_sitetree, inbreadcrumbs=in_breadcrumbs,
-                                   access_loggedin=access_loggedin, access_guest=access_guest)
+    item_obj = get_tree_item_model()(
+        title=title, url=url, urlaspattern=url_as_pattern, hint=hint,
+        hidden=hidden, alias=alias, description=description, inmenu=in_menu,
+        insitetree=in_sitetree, inbreadcrumbs=in_breadcrumbs,
+        access_loggedin=access_loggedin, access_guest=access_guest)
 
     item_obj.id = generate_id_for(item_obj)
     item_obj.is_dynamic = True
